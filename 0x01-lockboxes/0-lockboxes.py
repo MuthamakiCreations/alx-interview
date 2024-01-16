@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module that finds out if all lockboxes can be opened"""
+"""The module that establishes if all lockboxes can be unlocked"""
 
 
 def canUnlockAll(boxes):
