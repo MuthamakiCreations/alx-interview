@@ -4,7 +4,9 @@
 
 
 def canUnlockAll(boxes):
-    '''Used to confirm if the other boxes, just like the first one, can be unlocked.
+    '''Used to confirm if the other boxes, just like the first one, 
+    can be unlocked, in a list of boxes containing the keys
+    (indices) to other boxes.
     '''
     n = len(boxes)
     seen_boxes = set([0])
