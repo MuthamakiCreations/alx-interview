@@ -1,47 +1,38 @@
 #!/usr/bin/python3
-"""
-Module that parses a log and prints stats to stdout
-"""
+""" a script that reads stdin line by line and computes metrics """
+
 from sys import stdin
 
-status_codes = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
 
-size = 0
+status_dict = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+total_file_size = 0
+count = 0
 
 
 def print_stats():
-    """Prints the accumulated logs"""
-    print("File size: {}".format(size))
-    for status in sorted(status_codes.keys()):
-        if status_codes[status]:
-            print("{}: {}".format(status, status_codes[status]))
+    """function to print all statistics"""
+    print("File size:", total_file_size)
+    for key, value in status_dict.items():
+        if value:
+            print("{}: {}".format(key, value))
 
 
-if __name__ == "__main__":
-    count = 0
-    try:
-        for line in stdin:
-            try:
-                items = line.split()
-                size += int(items[-1])
-                if items[-2] in status_codes:
-                    status_codes[items[-2]] += 1
-            except:
-                pass
-            if count == 9:
-                print_stats()
-                count = -1
-            count += 1
-    except KeyboardInterrupt:
-        print_stats()
-        raise
+try:
+    for line_number, line in enumerate(stdin, start=1):
+        line = line.split()
+        try:
+            file_size = int(line[-1])
+            total_file_size += file_size
+        except (IndexError, ValueError, TypeError):
+            continue
+        try:
+            status_code = int(line[-2])
+            if status_code in status_dict.keys():
+                status_dict[status_code] += 1
+        except (IndexError, ValueError, TypeError):
+            continue
+        if line_number % 10 == 0:
+            print_stats()
+    print_stats()
+except KeyboardInterrupt:
     print_stats()
