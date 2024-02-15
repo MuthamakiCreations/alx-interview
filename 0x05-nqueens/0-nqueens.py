@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 import sys
 
+
 def is_safe(board, row, col):
-    # Check if there is a queen in the same column
+    # Check if there is a queen in the same column or diagonals
     for i in range(row):
         if board[i] == col or \
            board[i] - i == col - row or \
            board[i] + i == col + row:
             return False
     return True
+
 
 def solve_n_queens_util(board, row, N, solutions):
     if row == N:
@@ -19,6 +21,7 @@ def solve_n_queens_util(board, row, N, solutions):
         if is_safe(board, row, col):
             board[row] = col
             solve_n_queens_util(board, row+1, N, solutions)
+
 
 def solve_n_queens(N):
     if not N.isdigit():
@@ -36,6 +39,7 @@ def solve_n_queens(N):
 
     for solution in solutions:
         print([[i, solution[i]] for i in range(N)])
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
